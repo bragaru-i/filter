@@ -1,0 +1,30 @@
+[
+  {
+    "id": "state",
+    "parent": "State",
+    "children": [
+      {
+        "id": 1,
+        "text": "Available"
+      },
+      {
+        "id": 2,
+        "text": "Patching"
+      }
+    ]
+  },
+  {
+    "id": "genre",
+    "parent": "Genre Filters",
+    "children": [
+      {
+        "id": 1,
+        "text": "Shooters"
+      },
+      {
+        "id": 2,
+        "text": "Action"
+      }
+    ]
+  }
+]
