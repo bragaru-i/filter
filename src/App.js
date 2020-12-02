@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import AsideFilter from './AsideFilter/AsideFilter';
 import DisplayCard from './DisplayCard/DisplayCard';
 
 const App = () => {
-  const [checkbox, setCheckbox] = useState({
-    Available: false,
-    Patching: false,
-    Shooters: false,
-    Action: false,
-  });
+  const [filters, setFilters] = useState([]);
+  const updateFilters = (e) => {
+    // if filter is already in the list, then we remove it
+    if (filters.includes(e.target.value)) {
+      setFilters((prevState) =>
+        prevState.filter((el) => el !== e.target.value)
+      );
+      // otherwise we add as a new value
+    } else setFilters((prevState) => [...prevState, e.target.value]);
+  };
   return (
     <div className="App">
-      <AsideFilter checkbox={checkbox} setCheckbox={setCheckbox} />
-      <DisplayCard filters={checkbox} />
+      <AsideFilter updateFilters={updateFilters} />
+      <DisplayCard filters={filters} />
     </div>
   );
 };

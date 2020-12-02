@@ -12,54 +12,44 @@ let array = dataJson
     }, {}),
   items = array;
 
-const cleanObj = (obj) =>
-  Object.keys(obj).forEach((key) => obj[key].length < 1 && delete obj[key]);
+// transform all array elements to uppercase
+const arrToUppercase = (arr) => arr.map((el) => el.toUpperCase());
+
+// takes 2 array and compare for at least one equal element
+const hasCommonElelent = (arr1, arr2) => {
+  for (let i = 0; i < arr1.length; i++) {
+    for (let j = 0; j < arr2.length; j++) {
+      if (arr1[i] === arr2[j]) return true;
+    }
+  }
+  return false;
+};
 
 const DisplayCard = ({ filters }) => {
-  let filterKeys = [];
-  //   converting true values of filters object to Array
+  const arrayKeys = Object.keys(items);
+  let dataToDisplay = {};
+  if (filters.length > 0) {
+    // all filters will be in capital letters
+    const filtersToCapital = arrToUppercase(filters);
+    arrayKeys.forEach((arrKey) => {
+      const filteredArray = items[arrKey].filter((el) => {
+        // joining genres and status in 1 array
+        const valuesInterested = [...arrToUppercase(el.genres), el.status];
+        //  returning if they have common elements
+        return hasCommonElelent(filtersToCapital, valuesInterested);
+      });
 
-  Object.keys(filters).forEach((el) => filters[el] && filterKeys.push(el.toLowerCase()));
-  //   declaring variable wich show filtered information
-
-  let dataToDisplay = '';
-  if (filterKeys.length > 0) {
-    const result = Object.entries(items);
-    result.forEach((res) => {
-      // FILTERED IS SPLITTED IN 2
-
-      let firstFilter = [];
-      let secondFilter = [];
-      filterKeys.forEach((el) =>
-        el.toLowerCase() === 'available' || el.toLowerCase() === 'patching'
-          ? firstFilter.push(el.toLowerCase())
-          : secondFilter.push(el.toLowerCase())
-      );
-      // doing first filter => values that are one of the values
-
-      if (firstFilter.length > 0) {
-        res[1] = res[1].filter((item) => firstFilter.includes(item.status.toLowerCase()));
-      }
-
-      // doing second search => values that must be
-      if (secondFilter.length > 0) {
-        res[1] = res[1].filter((item) => {
-          let counter = 0;
-          secondFilter.forEach(
-            (queue) =>
-              item.genres.map((v) => v.toLowerCase()).includes(queue) && counter++
-          );
-          if (counter === secondFilter.length) return item;
-          return null;
-        });
-      }
+      // 1. if filtered letter isn't empty, then we add it to data
+      if (filteredArray.length > 0)
+        dataToDisplay = {
+          ...dataToDisplay,
+          [arrKey]: filteredArray,
+        };
     });
-    dataToDisplay = Object.fromEntries(result);
   } else {
-    dataToDisplay = { ...items };
+    // 2. otherwise we return default items with a reference
+    dataToDisplay = items;
   }
-  //   1. if no queue , then display all data
-  cleanObj(dataToDisplay);
   console.log(dataToDisplay);
   return <div>bullshit</div>;
 };

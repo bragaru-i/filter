@@ -21,9 +21,18 @@
         "id": 1,
         "text": "Shooters"
       },
+
       {
         "id": 2,
         "text": "Action"
+      },
+      {
+        "id": 3,
+        "text": "Indie"
+      },
+      {
+        "id": 4,
+        "text": "Puzzle"
       }
     ]
   }
